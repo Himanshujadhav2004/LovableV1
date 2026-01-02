@@ -3,6 +3,7 @@
 "use client"
 import { useTRPC } from "@/trpc/client"
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 
 
 
@@ -11,12 +12,13 @@ import { useMutation } from "@tanstack/react-query";
 
   const trpc = useTRPC();
   const invoke= useMutation(trpc.invoke.mutationOptions({}));
-
+const [value,setvalue] = useState("");
 console.log("Server componet")
 
   return (
  <div>
-  <button onClick={()=> invoke.mutate({text:"himanshu"})}>Invoke Background Job</button>
+  <input value={value} onChange={(e)=>setvalue(e.target.value)}></input>
+  <button onClick={()=> invoke.mutate({value:value})}>Invoke Background Job</button>
 
  </div>
   );
