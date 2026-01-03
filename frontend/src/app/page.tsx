@@ -19,8 +19,9 @@ console.log("Server componet")
   return (
  <div>
   <input value={value} onChange={(e)=>setvalue(e.target.value)}></input>
+  
 
-  <Button onClick={()=> invoke.mutate({value:value})}>Invoke Background Job</Button>
+  <Button onClick={()=> invoke.mutate({value:value})}>Build</Button>
 
  </div>
   );
