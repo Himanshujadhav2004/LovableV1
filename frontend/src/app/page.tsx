@@ -4,6 +4,8 @@
 import { Button } from "@/components/ui/button";
 import { useTRPC } from "@/trpc/client"
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { Variable } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 
@@ -11,9 +13,15 @@ import { useState } from "react";
 
  const page=()=> {  
 
+  const router   =useRouter();
+
   const trpc = useTRPC();
-  const {data:messages} = useQuery(trpc.messages.getMany.queryOptions());
-  const createMessage= useMutation(trpc.messages.create.mutationOptions({}));
+
+  const createProject= useMutation(trpc.projects.create.mutationOptions({
+    onSuccess:(data)=>{
+router.push(`/projects/${data.id}`);
+    }
+  }));
 const [value,setvalue] = useState("");
 console.log("Server componet")
 
@@ -22,9 +30,8 @@ console.log("Server componet")
   <input value={value} onChange={(e)=>setvalue(e.target.value)}></input>
   
 
-  <Button onClick={()=> createMessage.mutate({value:value})}>Build</Button>
-{JSON.stringify(messages,null,2
-)}
+  <Button onClick={()=> createProject.mutate({value:value})}>Build</Button>
+
  </div>
   );
 }

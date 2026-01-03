@@ -1,6 +1,6 @@
 import { inngest } from "./client";
 import { createAgent, createNetwork, createTool, gemini, Tool } from "@inngest/agent-kit";
-import {Result, Sandbox} from "@e2b/code-interpreter";
+import { Sandbox} from "@e2b/code-interpreter";
 import { getsandbox, lastAssistantTextMessageContent } from "./utils";
 import z from "zod";
 
@@ -157,32 +157,33 @@ const isError = !result.state.data.summary || Object.keys(result.state.data.file
       return `https://${host}`
     })
 
-    await step.run("save-result",async()=>{
-      if(isError){
-        return  await prisma.message.create({
-          data:{
-            content:"Something went worng. please try again",
-            role:"ASSISTANT",
-            type:"ERROR"
-          }
-        });
+   await step.run("save-result",async()=>{
+  if(isError){
+    return await prisma.message.create({
+      data:{
+        projectId: event.data.projectId,  // ← Use projectId from event
+        content: "Something went wrong. please try again",
+        role: "ASSISTANT",
+        type: "ERROR"
       }
-      return await prisma.message.create({
-        data:{
-          content:result.state.data.summary,
-          role:"ASSISTANT",
-          type:"RESULT",
-          fragment:{
-          create:{
-            sandboxUrl:sandboxurl,
-            title:"Fragment",
-            files:result.state.data.files
-          }
-          }
+    });
+  }
+  return await prisma.message.create({
+    data:{
+      projectId: event.data.projectId,  // ← Use projectId from event
+      content: result.state.data.summary,
+      role: "ASSISTANT",
+      type: "RESULT",
+      fragment:{
+        create:{
+          sandboxUrl: sandboxurl,
+          title: "Fragment",
+          files: result.state.data.files
         }
-      })
-    })
-    
+      }
+    }
+  })
+})
     return {url:sandboxurl,
        title:"Fragment",
    
