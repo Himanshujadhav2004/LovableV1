@@ -1,6 +1,7 @@
 
 
 "use client"
+import { Button } from "@/components/ui/button";
 import { useTRPC } from "@/trpc/client"
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
@@ -18,7 +19,8 @@ console.log("Server componet")
   return (
  <div>
   <input value={value} onChange={(e)=>setvalue(e.target.value)}></input>
-  <button onClick={()=> invoke.mutate({value:value})}>Invoke Background Job</button>
+
+  <Button onClick={()=> invoke.mutate({value:value})}>Invoke Background Job</Button>
 
  </div>
   );
