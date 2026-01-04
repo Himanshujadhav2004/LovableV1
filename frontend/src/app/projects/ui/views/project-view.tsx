@@ -6,6 +6,7 @@ import { MessagesContainer } from "./components/messages-container";
 import { ResizableHandle,ResizablePanel,ResizablePanelGroup } from "@/components/ui/resizable";
 import { Fragment } from "@/generated/prisma/client";
 import { Suspense, useState } from "react";
+import { ProjectHeader } from "./components/project-header";
 interface Props{
     projectId:string;
 
@@ -19,7 +20,9 @@ return (
     <div className="h-screen">
         <ResizablePanelGroup >
             <ResizablePanel defaultSize={35} minSize={20} className="flex flex-col min-h-0">
-
+                <Suspense fallback={<p>Loading Project...</p>}>
+<ProjectHeader projectId={projectId}/>
+</Suspense>
   <Suspense fallback={<p>Loading Messages...</p>}>
 <MessagesContainer projectId={projectId}
 activeFragment={activeFragment}
