@@ -4,7 +4,7 @@
 import { Button } from "@/components/ui/button";
 import { useTRPC } from "@/trpc/client"
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Variable } from "lucide-react";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
