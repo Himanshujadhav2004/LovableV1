@@ -4,13 +4,16 @@
 import { MessagesContainer } from "./components/messages-container";
 
 import { ResizableHandle,ResizablePanel,ResizablePanelGroup } from "@/components/ui/resizable";
-import { Suspense } from "react";
+import { Fragment } from "@/generated/prisma/client";
+import { Suspense, useState } from "react";
 interface Props{
-    projectId:string
+    projectId:string;
+
 };
 
 
 export const ProjectView =({projectId}:Props)=>{
+    const [activeFragment,setActiveFragment] =useState<Fragment | null>(null);
 
 return (
     <div className="h-screen">
@@ -18,7 +21,10 @@ return (
             <ResizablePanel defaultSize={35} minSize={20} className="flex flex-col min-h-0">
 
   <Suspense fallback={<p>Loading Messages...</p>}>
-<MessagesContainer projectId={projectId}></MessagesContainer>
+<MessagesContainer projectId={projectId}
+activeFragment={activeFragment}
+setActiveFragment={setActiveFragment}
+></MessagesContainer>
 
   </Suspense>
             </ResizablePanel>
